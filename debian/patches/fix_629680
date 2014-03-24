@@ -1,0 +1,28 @@
+Description: Use the correct path to the squidclient binary for Debian
+ Upstream has been consulted as to their preferred solution to this problem,
+ but has been unresponsive
+Author: Andrew Pollock <apollock@debian.org>
+Bug-Debian: http://bugs.debian.org/629680
+
+Index: dstat-0.7.2/plugins/dstat_squid.py
+===================================================================
+--- dstat-0.7.2.orig/plugins/dstat_squid.py	2014-03-24 11:29:35.257840978 +1000
++++ dstat-0.7.2/plugins/dstat_squid.py	2014-03-24 11:31:47.419288955 +1000
+@@ -30,14 +30,14 @@
+             'objsz')
+ 
+     def check(self):
+-        if not os.access('/usr/sbin/squidclient', os.X_OK):
++        if not os.access('/usr/bin/squidclient', os.X_OK):
+             raise Exception, 'Needs squidclient binary'
+-        cmd_test('/usr/sbin/squidclient %s mgr:info' % squidclient_options)
++        cmd_test('/usr/bin/squidclient %s mgr:info' % squidclient_options)
+         return True
+  
+     def extract(self):
+         try:
+-            for l in cmd_splitlines('/usr/sbin/squidclient %s mgr:info' % squidclient_options, ':'):
++            for l in cmd_splitlines('/usr/bin/squidclient %s mgr:info' % squidclient_options, ':'):
+                 if l[0].strip() in self.vars:
+                     self.val[l[0].strip()] = l[1].strip()
+                     break
